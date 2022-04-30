@@ -17,16 +17,16 @@ addpath("util");
 
 # Config
 interpolate = true;
-approximate = true;
+approximate = false;
 polynomial = true;
 normalize = 1;
 
-alpha = 2.3;
-fun = testFunctions2D(1);
+alpha = 1;
+fun = testFunctions2D(9);
 [kernel, isGlobal] = kernels(9);
 
 # Sample input data
-input_x = input_y = 0:0.1:1;
+input_x = input_y = 0:0.2:1;
 render_x = render_y = 0:0.02:1;
 
 [input_xx, input_yy] = meshgrid (input_x, input_y);
@@ -58,7 +58,7 @@ if interpolate
   f = fun(x', y');
   minval = min(f);
   maxval = max(f);
-  f = scaleFunctionValues2(f, minval, maxval);
+  f = scaleFunctionValues(f, minval, maxval);
   
   # Optional polynomial
   A = B;
@@ -72,7 +72,7 @@ if interpolate
   endif
   
   # Calculate coefficients
-  cond(A)
+  conditionallity = cond(A)
   lambdas = linsolve(A, f)
 
   # Calculate simple error
@@ -84,9 +84,9 @@ if interpolate
   title(strcat("Intepolated, alpha=", num2str(alpha)));
 
   tf = fun(tx', ty');
-  tf = scaleFunctionValues2(tf, minval, maxval);
-  tf = reshape(tf, length(render_x), length(render_y));
-  surf(render_x, render_y, tf,...
+  tf = scaleFunctionValues(tf, minval, maxval);
+  tf_reshaped = reshape(tf, length(render_x), length(render_y));
+  surf(render_x, render_y, tf_reshaped,...
     'FaceLighting','gouraud',...
     'MeshStyle','column',...
     'SpecularColorReflectance',0,...
@@ -135,12 +135,22 @@ if interpolate
     b = b(1:end-3);
   endif
   
-  interpolated = reshape(interpolated, length(render_x), length(render_y));
-  surfc (render_x, render_y, interpolated);
+  interpolated_reshaped = reshape(interpolated, length(render_x), length(render_y));
+  surfc (render_x, render_y, interpolated_reshaped);
   hold on;
   
-  pts = scaleFunctionValues2(fun(x', y'), minval, maxval);
+  pts = scaleFunctionValues(fun(x', y'), minval, maxval);
   scatter3(x', y', pts, 'filled');
+  
+  # Metrics
+  f_orig = tf;
+  f_intp = interpolated;
+  
+  [RMSE, R2, MAX_ERR, AVG_DIFF] = getStatistics(f_orig, f_intp);
+  
+  plotSurf(render_x, render_y, f_intp, f_orig);
+  plotError(render_x, render_y, f_intp, f_orig);
+  hist(abs(f_intp - f_orig), 32);
   
 endif
 
@@ -166,7 +176,7 @@ if approximate
   f = fun(x', y');
   minval = min(f);
   maxval = max(f);
-  f = scaleFunctionValues2(f, minval, maxval);
+  f = scaleFunctionValues(f, minval, maxval);
   
   # Optional polynomial
   if polynomial
@@ -197,9 +207,9 @@ if approximate
   title(strcat("Approximated, alpha=", num2str(alpha)));
 
   tf = fun(tx', ty');
-  tf = scaleFunctionValues2(tf, minval, maxval);
-  tf = reshape(tf, length(render_x), length(render_y));
-  surf(render_x, render_y, tf,...
+  tf = scaleFunctionValues(tf, minval, maxval);
+  tf_reshaped = reshape(tf, length(render_x), length(render_y));
+  surf(render_x, render_y, tf_reshaped,...
     'FaceLighting','gouraud',...
     'MeshStyle','column',...
     'SpecularColorReflectance',0,...
@@ -248,11 +258,58 @@ if approximate
     b = b(1:end-3);
   endif
   
-  approximated = reshape(approximated, length(render_x), length(render_y));
-  surfc (render_x, render_y, approximated);
+  approximated_reshaped = reshape(approximated, length(render_x), length(render_y));
+  surfc(render_x, render_y, approximated_reshaped);
   hold on;
   
-  pts = scaleFunctionValues2(fun(sx', sy'), minval, maxval);
+  pts = scaleFunctionValues(fun(sx', sy'), minval, maxval);
   scatter3(sx', sy', pts, 'filled');
+  
+  # Metrics
+  f_orig = tf;
+  f_appx = approximated;  
+  [RMSE, R2, MAX_ERR, AVG_DIFF] = getStatistics(f_orig, f_appx);
+
+  plotSurf(render_x, render_y, f_appx, f_orig);
+  
+  sig_f_orig = scaleFunctionValues(fun(sx', sy'), minval, maxval);
+  
+  approximated = zeros(length(sig_pts), length(sig_pts));
+  approximated_nom = zeros(length(sig_pts), length(sig_pts));
+
+  for i = 1:length(sig_pts)
+    for j = 1:length(sig_pts)
+      approximated(i, j) = evaluateKernel(kernel, alpha, 0, isGlobal);
+      approximated_nom(i, j) = approximated(i, j) * lambdas(j);
+    endfor
+  endfor
+  
+  approximated_nom = sum(approximated_nom, 2);
+
+  # Optional normalization
+  if normalize == 1
+    approximated_div = sum(approximated, 2);
+    approximated = approximated_nom ./ approximated_div;
+  elseif normalize == 2
+    approximated_div = sum(approximated .* approximated, 2);
+    approximated = approximated_nom ./ sqrt(approximated_div);
+  else
+    approximated = sum(approximated_nom, 2);
+  endif
+  
+  # Optional polynomial
+  if polynomial
+    a0 = lambdas(end-2);
+    a1 = lambdas(end-1);
+    a2 = lambdas(end);
+    
+    polynomialTerm = a0 + sx' * a1 + sy' * a2;
+    approximated += polynomialTerm;
+    b = b(1:end-3);
+  endif
+  
+  sig_f_appx = approximated;
+  
+  APPROX_ERR = sum(abs(sig_f_appx - sig_f_orig))
   
 endif

@@ -1,4 +1,4 @@
-function [kernel, type] = kernels(i)
+function [kernel, type, latex] = kernels(i)
   
   gf = {
     @(a, r) exp(-((a * r) .^ 2));
@@ -28,7 +28,26 @@ function [kernel, type] = kernels(i)
   
   t = [globals locals];
   
+  l = {
+    '\(e^{-(\alpha r)^2}\)';
+    '\(r^2 \cdot log(r)\)';
+    '\(\frac{1}{1 + (\alpha r)^2}\)';
+    '\(\frac{1}{\sqrt(1 + (\alpha r)^2})\)';
+    '\(\sqrt(1 + (\alpha r)^2})\)';
+    '\(1 - \alpha r)\)';
+    '\(1 - \alpha r)^2\)';
+    '\(1 - \alpha r)^3\)';
+    '\(1 - \alpha r)^3\)';
+    '\(1 - \alpha r)^3\)';
+    '\(1 - \alpha r)^4\)';
+    '\(1 - \alpha r)^5\)';
+    '\(1 - \alpha r)^6\)';
+    '\(1 - \alpha r)^7\)';
+    '\(1 - \alpha r)^8\)';
+  };
+  
   kernel = f{i};
   type = t(i);
+  latex = l{i};
   
 endfunction  
