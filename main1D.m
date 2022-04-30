@@ -16,10 +16,10 @@ addpath("test");
 addpath("util");
 
 # Config
-interpolate = false;
+interpolate = true;
 approximate = true;
 polynomial = true;
-normalize = true;
+normalize = 2;
 
 alpha = 2.3;
 fun = testFunctions1D(1);
@@ -42,8 +42,8 @@ if interpolate
   B = getRbfMatrix(input_x, centers_x, kernel, alpha, isGlobal);
   
   # Optional normalization
-  if normalize 
-    B = getNormalizedRbf(B);
+  if normalize == 1 || normalize == 2
+    B = getNormalizedRbf(B, normalize);
   endif
   
   # Calculate target function values
@@ -95,7 +95,10 @@ if interpolate
   interpolated_nom = sum(interpolated_nom, 2);
 
   # Optional normalization
-  if normalize
+  if normalize == 1
+    interpolated_div = sum(interpolated, 2);
+    interpolated = interpolated_nom ./ interpolated_div;
+  elseif normalize == 2
     interpolated_div = sum(interpolated .* interpolated, 2);
     interpolated = interpolated_nom ./ sqrt(interpolated_div);
   else
@@ -166,8 +169,8 @@ if approximate
   endfor
   
   # Optional normalization
-  if normalize 
-    A = getNormalizedRbf(A);
+  if normalize ==  1 || normalize == 2
+    A = getNormalizedRbf(A, normalize);
   endif
   
   # Calculate target function values
@@ -224,7 +227,10 @@ if approximate
   approximated_nom = sum(approximated_nom, 2);
 
   # Optional normalization
-  if normalize
+  if normalize == 1
+    approximated_div = sum(approximated, 2);
+    approximated = approximated_nom ./ approximated_div;
+  elseif normalize == 2
     approximated_div = sum(approximated .* approximated, 2);
     approximated = approximated_nom ./ sqrt(approximated_div);
   else
