@@ -3,23 +3,19 @@
 Function that writes html table row and fill it with given interpolationdata.
 
 #}
-function output_write_row_int(fid, i, typ, f, rbf, rbfFunction, cond, rozdil, maxError, RMSE, R2)
+function output_write_row_int(fid, fname, kname, alpha, cond, rmse, r2, maxerr, avgdiff, i)
   fdisp (fid, "<tr style=text-align:center>");
   
   fdisp (fid, "<td>");
-  fdisp (fid, ['Dataset',num2str(i),'.txt']);
+  fdisp (fid, fname);
   fdisp (fid, "</td>");
   
   fdisp (fid, "<td>");
-  fdisp (fid, typ);
+  fdisp (fid, kname);
   fdisp (fid, "</td>");
   
   fdisp (fid, "<td>");
-  fdisp (fid, ['F',num2str(f),'(x,y)']);
-  fdisp (fid, "</td>");
-  
-  fdisp (fid, "<td>");
-  fdisp (fid, rbfFunction);
+  fdisp (fid, alpha);
   fdisp (fid, "</td>");
   
   fdisp (fid, "<td>");
@@ -27,30 +23,40 @@ function output_write_row_int(fid, i, typ, f, rbf, rbfFunction, cond, rozdil, ma
   fdisp (fid, "</td>");
   
   fdisp (fid, "<td>");
-  fdisp (fid, rozdil);
+  fdisp (fid, rmse);
   fdisp (fid, "</td>");
   
   fdisp (fid, "<td>");
-  fdisp (fid, maxError);
+  fdisp (fid, r2);
   fdisp (fid, "</td>");
   
   fdisp (fid, "<td>");
-  fdisp (fid, RMSE);
+  fdisp (fid, maxerr);
   fdisp (fid, "</td>");
   
   fdisp (fid, "<td>");
-  fdisp (fid, R2);
+  fdisp (fid, avgdiff);
   fdisp (fid, "</td>");
   
   fdisp (fid, "<td>");
-  name = sprintf("data%d/Interpolation_F%d(x,y)_rbf%d.jpg", i, f, rbf);
+  name = sprintf("results/data/%02d.png", i);
   name2 = fprintf (fid, "<a href=\%s><img src=\"%s\" width=\"200\" height=\"150\" /></a>", name, name);
   fdisp (fid, "</td>");
   
   fdisp (fid, "<td>");
-  name = sprintf("data%d/Interpolation_F%d(x,y)_rbf%d_contours.jpg", i, f, rbf);
+  name = sprintf("results/data/%02d_errsurf.png", i);
   name2 = fprintf (fid, "<a href=\%s><img src=\"%s\" width=\"200\" height=\"150\" /></a>", name, name);
   fdisp (fid, "</td>");
-    
-    fdisp (fid, "</tr>");
+  
+  fdisp (fid, "<td>");
+  name = sprintf("results/data/%02d_err.png", i);
+  name2 = fprintf (fid, "<a href=\%s><img src=\"%s\" width=\"200\" height=\"150\" /></a>", name, name);
+  fdisp (fid, "</td>");
+  
+  fdisp (fid, "<td>");
+  name = sprintf("results/data/%02d_histo.png", i);
+  name2 = fprintf (fid, "<a href=\%s><img src=\"%s\" width=\"200\" height=\"150\" /></a>", name, name);
+  fdisp (fid, "</td>");
+  
+  fdisp (fid, "</tr>");
 endfunction

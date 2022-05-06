@@ -5,7 +5,29 @@
 # for approximations and interpolations of functions in y = f(x) format
 #
 
-function main1D(interpolate, approximate, polynomial, normalize, alpha, fun, kernel, isGlobal)
+#function main1D(interpolate, approximate, polynomial, normalize, alpha, fun, kernel, isGlobal)
+  #
+  # Clear previous executions
+  clc; 
+  clear all; 
+  close all;
+
+  # Add scripts from subdirectories
+  addpath("io");
+  addpath("test");
+  addpath("util");
+
+  # Config
+  interpolate = true;
+  approximate = true;
+  polynomial = true;
+  normalize = 1;
+
+  alpha = 1;
+  [fun] = testFunctions1D(1);
+  [kernel, isGlobal, kname] = kernels(9);
+  #
+  
   # Sample input data
   input_x = (0:0.05:1)';
   render_x = (0:0.01:1)';
@@ -226,7 +248,7 @@ function main1D(interpolate, approximate, polynomial, normalize, alpha, fun, ker
     plot(render_x, approximated);
     
   endif
-endfunction
+#endfunction
 
 
 

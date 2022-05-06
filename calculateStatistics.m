@@ -1,4 +1,4 @@
-function [RMSE, R2, MAX_ERR, AVG_DIFF] = getStatistics(f_orig, f_new)
+function [RMSE, R2, MAX_ERR, AVG_DIFF] = calculateStatistics(f_orig, f_new)
   
   n = length(f_orig);
   

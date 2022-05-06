@@ -1,5 +1,4 @@
 function plotSurf(x, y, f, f_exact)
-  figure;
   err = abs(f - f_exact);
   maxerr = max(err);
   fun = reshape(f, length(x), length(y));
@@ -11,4 +10,10 @@ function plotSurf(x, y, f, f_exact)
   vcb = colorbar;
   ylim(vcb, [0, maxerr]);
   set(get(vcb, 'YLabel'), 'String', 'Error');
+  
+  title(['Interpolation error (surface)'])
+  xlabel('x')
+  ylabel('y')
+  zlabel('z')
+  
 endfunction
