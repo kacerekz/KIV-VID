@@ -6,7 +6,11 @@ function [A] = calculateNormalizedMatrix(A, type)
 
     for i = 1:size(A)(1)
       for j = 1:size(A)(2)
-        A(i, j) /= sqrt(Asum(i));
+        if Asum(i) == 0
+          A(i, j) = A(i, j);
+        else
+          A(i, j) /= sqrt(Asum(i));
+        endif
       endfor
     endfor
     
@@ -18,7 +22,11 @@ function [A] = calculateNormalizedMatrix(A, type)
     
     for i = 1:size(A)(1)
       for j = 1:size(A)(2)
-        A(i, j) /= Asum(i);
+        if Asum(i) == 0
+          A(i, j) = A(i, j);
+        else
+          A(i, j) /= sqrt(Asum(i));
+        endif      
       endfor
     endfor
   

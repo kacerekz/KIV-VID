@@ -4,7 +4,6 @@
 # Launches scripts comparing the properties of RBFs and normalized RBFs
 # for approximations and interpolations of functions in y = f(x) format
 #
-
 #function main1D(interpolate, approximate, polynomial, normalize, alpha, fun, kernel, isGlobal)
   #
   # Clear previous executions

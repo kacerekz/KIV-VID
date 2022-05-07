@@ -19,22 +19,13 @@ function output_write_header_row(fid)
   fdisp (fid, "</th>");
 
   fdisp (fid, "<th>");
-  fdisp (fid, "Conditionality");
+  fdisp (fid, "Cond.");
   fdisp (fid, "</th>");
   
   fdisp (fid, "<th>");
-  fdisp (fid, "RMSE");
-  fdisp (fid, "</th>");
-  
-  fdisp (fid, "<th>");
-  fdisp (fid, "R2");
-  fdisp (fid, "</th>");
-  
-  fdisp (fid, "<th>");
-  fdisp (fid, "Max error");
-  fdisp (fid, "</th>");
-  
-  fdisp (fid, "<th>");
+  fdisp (fid, "RMSE<br>");
+  fdisp (fid, "R2<br>");
+  fdisp (fid, "Max error<br>");
   fdisp (fid, "Average difference");
   fdisp (fid, "</th>");
   
