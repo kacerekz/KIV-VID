@@ -1,4 +1,4 @@
-function [COND, RMSE, R2, MAX_ERR, AVG_DIFF] = interpolate2D(index, polynomial, normalize, alpha, _fun, _kernel, pts)
+function [COND, RMSE, R2, MAX_ERR, AVG_DIFF] = interpolate2D(index, dir, polynomial, normalize, alpha, _fun, _kernel, pts)
   # Sample input data
   # Sample input data
   render_x = render_y = 0:0.02:1;
@@ -124,6 +124,6 @@ function [COND, RMSE, R2, MAX_ERR, AVG_DIFF] = interpolate2D(index, polynomial, 
   #plotError(render_x, render_y, f_intp, f_orig);
   #hist(abs(f_intp - f_orig), 32);
   
-  output_write_interpolation(index, render_x, render_y, interpolated_reshaped, x', y', pts, f_intp, f_orig);
+  output_write_interpolation(index, dir, render_x, render_y, interpolated_reshaped, x', y', pts, f_intp, f_orig);
     
 endfunction

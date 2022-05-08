@@ -1,4 +1,4 @@
-function [COND, RMSE, R2, MAX_ERR, AVG_DIFF] = interpolate1D(index, polynomial, normalize, alpha, _fun, _kernel, pts)
+function [COND, RMSE, R2, MAX_ERR, AVG_DIFF] = interpolate1D(index, dir, polynomial, normalize, alpha, _fun, _kernel, pts)
 
   [fun] = testFunctions1D(_fun);
   [kernel, isGlobal] = kernels(_kernel);
@@ -7,6 +7,9 @@ function [COND, RMSE, R2, MAX_ERR, AVG_DIFF] = interpolate1D(index, polynomial, 
   render_x = (0:0.01:1)';
   centers_x = input_x;
   
+  n = length(input_x);
+  dim = 2;
+    
   B = calculateMatrix(input_x, centers_x, kernel, alpha, isGlobal);
     
   # Optional normalization
@@ -88,6 +91,6 @@ function [COND, RMSE, R2, MAX_ERR, AVG_DIFF] = interpolate1D(index, polynomial, 
   
   [RMSE, R2, MAX_ERR, AVG_DIFF] = calculateStatistics(f_orig, f_intp);
   
-  output_write_interpolation1D(index, input_x, render_x, f, groundTruth, interpolated);
+  output_write_interpolation1D(index, dir, input_x, render_x, f, groundTruth, interpolated);
 
 endfunction

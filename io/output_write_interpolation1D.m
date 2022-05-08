@@ -1,15 +1,7 @@
 #{
 Function that saves interpolation figures.
 #}
-function output_write_interpolation1D(i, input_x, render_x, f, groundTruth, interpolated)
-
-  if not(isfolder("results"))
-      mkdir("results")
-  end
-  
-  if not(isfolder("results/data"))
-      mkdir("results/data")
-  end
+function output_write_interpolation1D(i, dir, input_x, render_x, f, groundTruth, interpolated)
 
   figure('Name', ['Interpolation'], 'NumberTitle', 'off')
   scatter(input_x, f, 10);
@@ -25,7 +17,7 @@ function output_write_interpolation1D(i, input_x, render_x, f, groundTruth, inte
   xticks(0:0.1:1)
   yticks(0:0.1:1)
   legend({'Input points', 'Ground truth','Interpolation'},'Location','northwest')
-  name = sprintf("results/data/%02d.png", i);
+  name = sprintf("%s/%02d.png", dir, i);
   print(name, '-dpng', '-S800,600');
   
 endfunction

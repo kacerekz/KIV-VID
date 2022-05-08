@@ -24,19 +24,19 @@ function [fun, name] = testFunctions1D(i)
   
   n = {
     '\(sin(15x^2) + 5x \)';
-    '\(0.5cos(20x) + 5x\)';
-    '\(50(0.4sin(15x^2) + 5x)\)';
+    '\(0.5 \cdot cos(20x) + 5x\)';
+    '\(50 \cdot (0.4 \cdot sin(15x^2) + 5x)\)';
     '\(sin(8 \pi x)\)';
     
     '\(sin(6 \pi x^2)\)';
     '\(\frac{sin(25x + 0.1)}{25x + 0.1}\)';
-    '\(2 sin(2 \pi x) + sin(4 \pi x)\)';
-    '\(2 sin(2 \pi x) + sin(4 \pi x) + sin(8 \pi x)\)';
+    '\(2 \cdot sin(2 \pi x) + sin(4 \pi x)\)';
+    '\(2 \cdot sin(2 \pi x) + sin(4 \pi x) + sin(8 \pi x)\)';
     
-    '\(-2 sin(2 \pi x) + cos(6 \pi x)\)';
-    '\(2 sin(2 \pi x) + cos(6 \pi x)\)';
-    '\(-2 sin(2 \pi x) + cos(6 \pi x) - x\)';
-    '\(-2 sin(2 \pi x) - cos(4 \pi x)\)';
+    '\(-2 \cdot sin(2 \pi x) + cos(6 \pi x)\)';
+    '\(2 \cdot sin(2 \pi x) + cos(6 \pi x)\)';
+    '\(-2 \cdot sin(2 \pi x) + cos(6 \pi x) - x\)';
+    '\(-2 \cdot sin(2 \pi x) - cos(4 \pi x)\)';
     
     '\(atan((10x - 5)^3) + 0.5 \cdot atan((10x - 8)^3)\)';
     '\((4.48x - 1.88) \cdot sin((4.48x - 1.88)^ 2) + 1\)';

@@ -4,15 +4,7 @@ Function that saves interpolation figures.
 
 #}
 
-function output_write_interpolation(i, x, y, z, pts_x, pts_y, pts_z, f_intp, f_orig)
-
-  if not(isfolder("results"))
-      mkdir("results")
-  end
-  
-  if not(isfolder("results/data"))
-      mkdir("results/data")
-  end
+function output_write_interpolation(i, dir, x, y, z, pts_x, pts_y, pts_z, f_intp, f_orig)
 
   figure('Name', ['Interpolation'], 'NumberTitle', 'off')
   scatter3(pts_x, pts_y, pts_z, 'filled')
@@ -29,19 +21,19 @@ function output_write_interpolation(i, x, y, z, pts_x, pts_y, pts_z, f_intp, f_o
   yticks(0:0.2:1)
   zticks(-0.2:0.2:1.4)
   legend({'Input points','Interpolation'})
-  name = sprintf("results/data/%02d.png", i);
+  name = sprintf("%s/%02d.png", dir, i);
   print(name, '-dpng', '-S800,600');
   
   
   figure('Name', ['Interpolation error (surface)'], 'NumberTitle', 'off')
   plotSurf(x, y, f_intp, f_orig);
-  name = sprintf("results/data/%02d_errsurf.png", i);
+  name = sprintf("%s/%02d_errsurf.png", dir, i);
   print(name, '-dpng', '-S800,600');
 
   
   figure('Name', ['Interpolation error'], 'NumberTitle', 'off')
   plotError(x, y, f_intp, f_orig);
-  name = sprintf("results/data/%02d_err.png", i);
+  name = sprintf("%s/%02d_err.png", dir, i);
   print(name, '-dpng', '-S800,600');
   
   
@@ -51,7 +43,7 @@ function output_write_interpolation(i, x, y, z, pts_x, pts_y, pts_z, f_intp, f_o
   xlabel('x')
   ylabel('y')
   zlabel('z')
-  name = sprintf("results/data/%02d_histo.png", i);
+  name = sprintf("%s/%02d_histo.png", dir, i);
   print(name, '-dpng', '-S800,600');
   
   #{

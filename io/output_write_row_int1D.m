@@ -3,7 +3,7 @@
 Function that writes html table row and fill it with given interpolationdata.
 
 #}
-function output_write_row_int(fid, i, dir, fname, kname, alpha, cond, rmse, r2, maxerr, avgdiff)
+function output_write_row_int1D(fid, i, dir, fname, kname, alpha, cond, rmse, r2, maxerr, avgdiff)
   fdisp (fid, "<tr style=text-align:center>");
   
   fdisp (fid, "<td>");
@@ -34,21 +34,6 @@ function output_write_row_int(fid, i, dir, fname, kname, alpha, cond, rmse, r2, 
   
   fdisp (fid, "<td>");
   name = sprintf("%s/%02d.png", dir, i);
-  name2 = fprintf (fid, "<a href=\%s><img src=\"%s\" width=\"200\" height=\"150\" /></a>", name, name);
-  fdisp (fid, "</td>");
-  
-  fdisp (fid, "<td>");
-  name = sprintf("%s/%02d_errsurf.png", dir, i);
-  name2 = fprintf (fid, "<a href=\%s><img src=\"%s\" width=\"200\" height=\"150\" /></a>", name, name);
-  fdisp (fid, "</td>");
-  
-  fdisp (fid, "<td>");
-  name = sprintf("%s/%02d_err.png", dir, i);
-  name2 = fprintf (fid, "<a href=\%s><img src=\"%s\" width=\"200\" height=\"150\" /></a>", name, name);
-  fdisp (fid, "</td>");
-  
-  fdisp (fid, "<td>");
-  name = sprintf("%s/%02d_histo.png", dir, i);
   name2 = fprintf (fid, "<a href=\%s><img src=\"%s\" width=\"200\" height=\"150\" /></a>", name, name);
   fdisp (fid, "</td>");
   

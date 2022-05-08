@@ -11,18 +11,23 @@ addpath("util");
 addpath("data");
 
 # Config
-uniform = true;
+uniform = false;
 interpolate = true;
 approximate = false;
 polynomial = false;
 normalize = 2;
 dim = 1;
 n = 11;
+n = n ** dim;
 
 alpha = 1;
 _fun = 2;
 _kernel = 9;
 
+# Generate ID string
+id_string = makeId(n, dim, uniform, interpolate, polynomial, normalize, _fun, _kernel);
+
+# Start working
 total_kernels = 15;
 total_1Ds = 16;
 total_2Ds = 9;
@@ -36,19 +41,43 @@ if dim == 1
   
 elseif dim == 2
   if uniform
-    pts = uniform2D(n*n);
+    pts = uniform2D(n);
   else
-    pts = halton2D(n*n);
+    pts = halton2D(n);
   endif
 endif
 
+if not(isfolder("results"))
+    mkdir("results")
+end
 
-filename = "test.html";
+if not(isfolder("results/data"))
+    mkdir("results/data")
+end
+
+dir = strcat("results/data/", id_string);
+
+if not(isfolder(dir))
+  mkdir(dir)
+else
+  rmdir(dir, 's')
+  mkdir(dir)
+end
+
+filename = strcat(dir, ".html");
 file_handle = fopen(filename, 'w');
+
+filename2 = strcat(dir, ".csv");
+file_handle2 = fopen(filename2, 'w');
 
 output_write_html_begin(file_handle);
 output_write_table_begin(file_handle);
-output_write_header_row(file_handle);
+
+if dim == 1
+  output_write_header_row1D(file_handle);
+else
+  output_write_header_row(file_handle);
+endif
 
 for index = 1:total_1Ds
   _fun = index;
@@ -60,8 +89,9 @@ for index = 1:total_1Ds
     
     if interpolate
       [COND, RMSE, R2, MAX_ERR, AVG_DIFF] = ...
-        interpolate1D(index, polynomial, normalize, alpha, _fun, _kernel, pts);
-        #output_write_row_int(file_handle, index, fname, kname, alpha, COND, RMSE, R2, MAX_ERR, AVG_DIFF);
+        interpolate1D(index, dir, polynomial, normalize, alpha, _fun, _kernel, pts);
+        output_write_row_int1D(file_handle, index, id_string, fname, kname, alpha, COND, RMSE, R2, MAX_ERR, AVG_DIFF);
+        output_csv_int1D(file_handle2, index, COND, RMSE, R2, MAX_ERR, AVG_DIFF);
     endif
     
     if approximate
@@ -76,8 +106,8 @@ for index = 1:total_1Ds
     
     if interpolate
       [COND, RMSE, R2, MAX_ERR, AVG_DIFF] = ...
-        interpolate2D(index, polynomial, normalize, alpha, _fun, _kernel, pts);
-        output_write_row_int(file_handle, index, fname, kname, alpha, COND, RMSE, R2, MAX_ERR, AVG_DIFF);
+        interpolate2D(index, dir, polynomial, normalize, alpha, _fun, _kernel, pts);
+        output_write_row_int(file_handle, index, id_string, fname, kname, alpha, COND, RMSE, R2, MAX_ERR, AVG_DIFF);
     endif
     
     if approximate
@@ -94,3 +124,4 @@ output_write_table_end(file_handle);
 output_write_html_end(file_handle);
 
 fclose(file_handle);
+fclose(file_handle2);
